@@ -1,71 +1,112 @@
 #include <stdio.h>
 
-int main()
+// ==== Funções Recursivas ====
+
+/**
+ * Movimento recursivo da Torre: move-se para a direita.
+ */
+void moverTorre(int passos)
 {
-    int movimentoTorre, movimentoBispo, movimentoRainha;
-    int repeticoesCavalo;
+    if (passos <= 0)
+        return;
+    printf("Direita\n");
+    moverTorre(passos - 1);
+}
 
-    // Introdução
-    printf("--- Xadrez por códigos ---\n");
-    printf("Digite o número de movimentos para cada peça:\n");
+/**
+ * Movimento recursivo da Rainha: move-se para a esquerda.
+ */
+void moverRainha(int passos)
+{
+    if (passos <= 0)
+        return;
+    printf("Esquerda\n");
+    moverRainha(passos - 1);
+}
 
-    // Entradas das peças
-    printf("Torre (para a direita): ");
-    scanf("%d", &movimentoTorre);
+/**
+ * Movimento recursivo do Bispo com loop aninhado:
+ * Movimento diagonal: cima + direita.
+ */
+void moverBispo(int passos)
+{
+    if (passos <= 0)
+        return;
 
-    printf("Bispo (em diagonal para cima e à direita): ");
-    scanf("%d", &movimentoBispo);
-
-    printf("Rainha (para a esquerda): ");
-    scanf("%d", &movimentoRainha);
-
-    printf("Cavalo (quantas vezes deseja repetir o movimento em L - 2 baixo + 1 esquerda): ");
-    scanf("%d", &repeticoesCavalo);
-
-    // Movimento da Torre - for
-    printf("\nMovimentos da Torre:\n");
-    for (int i = 0; i < movimentoTorre; i++)
+    // Loop aninhado para simular movimento diagonal (linha e coluna)
+    for (int linha = 1; linha <= 1; linha++)
     {
-        printf("Direita\n");
-    }
-
-    // Movimento do Bispo - while
-    printf("\nMovimentos do Bispo:\n");
-    int i = 0;
-    while (i < movimentoBispo)
-    {
-        printf("Cima Direita\n");
-        i++;
-    }
-
-    // Movimento da Rainha - do-while
-    printf("\nMovimentos da Rainha:\n");
-    i = 0;
-    if (movimentoRainha > 0)
-    {
-        do
+        for (int coluna = 1; coluna <= 1; coluna++)
         {
-            printf("Esquerda\n");
-            i++;
-        } while (i < movimentoRainha);
+            printf("Cima Direita\n");
+        }
     }
 
-    // Movimento do Cavalo - loops aninhados
-    printf("\nMovimentos do Cavalo:\n");
-    for (int j = 0; j < repeticoesCavalo; j++)
-    {
-        int k = 0;
+    moverBispo(passos - 1);
+}
 
-        // Duas casas para baixo
-        while (k < 2)
+// ==== Lógica complexa para o Cavalo ====
+
+/**
+ * Movimento em L do Cavalo: 2 para cima e 1 para direita
+ * Usando loops aninhados e controle de fluxo (continue/break)
+ */
+void moverCavalo(int repeticoes)
+{
+    printf("\nMovimentos do Cavalo (2 Cima + 1 Direita):\n");
+
+    for (int i = 0; i < repeticoes; i++)
+    {
+        int movimento = 0;
+
+        // Loop para duas casas para cima
+        for (int cima = 1; cima <= 2; cima++)
         {
-            printf("Baixo\n");
-            k++;
+            if (cima == 2 && i % 2 == 0)
+                continue; // Pula se par na 2ª casa
+            printf("Cima\n");
+            movimento++;
         }
 
-        // Uma casa para a esquerda
-        printf("Esquerda\n");
+        // Loop separado para a direita com condição
+        int direita = 1;
+        while (direita <= 1)
+        {
+            if (movimento < 2)
+                break; // Garante que só move se subiu 2 vezes
+            printf("Direita\n");
+            direita++;
+        }
     }
+}
+
+// ==== Função Principal ====
+
+int main()
+{
+    // Quantidade de movimentos definida no código
+    int passosTorre = 5;
+    int passosBispo = 5;
+    int passosRainha = 8;
+    int repeticoesCavalo = 3;
+
+    // Título
+    printf("--- Simulação de Xadrez com Movimentos Complexos ---\n");
+
+    // Torre (Recursão)
+    printf("\nMovimentos da Torre:\n");
+    moverTorre(passosTorre);
+
+    // Bispo (Recursão + Loop Aninhado)
+    printf("\nMovimentos do Bispo:\n");
+    moverBispo(passosBispo);
+
+    // Rainha (Recursão)
+    printf("\nMovimentos da Rainha:\n");
+    moverRainha(passosRainha);
+
+    // Cavalo (Loops Complexos)
+    moverCavalo(repeticoesCavalo);
 
     return 0;
 }
